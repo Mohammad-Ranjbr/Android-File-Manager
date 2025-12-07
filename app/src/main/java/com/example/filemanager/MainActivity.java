@@ -19,16 +19,24 @@ public class MainActivity extends AppCompatActivity {
 
         //The path to our project file is in the path storage/self/primary/Android/data
         File externalFilesDirection = getExternalFilesDir(null);
+        listFiles(externalFilesDirection.getPath(), false);
+
+    }
+
+    public void listFiles(String path, boolean addToBackStack) {
         FileListFragment fileListFragment = new FileListFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("path", externalFilesDirection.getPath());
+        bundle.putString("path", path);
         fileListFragment.setArguments(bundle);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_main_fragmentContainer, fileListFragment);
+        if (addToBackStack) transaction.addToBackStack(null);
         transaction.commit();
-
-
-
     }
+
+    public void listFiles(String path) {
+        this.listFiles(path, true);
+    }
+
 }
