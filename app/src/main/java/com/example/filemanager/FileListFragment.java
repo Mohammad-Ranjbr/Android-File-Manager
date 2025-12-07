@@ -78,7 +78,13 @@ public class FileListFragment extends Fragment implements FileItemEventListener 
 
     @Override
     public void onMoveFileItemClick(File file) {
-
+        try {
+            copy(file, getDestinationPath(file.getName()));
+            onDeleteItemClick(file);
+            Toast.makeText(getContext(), "File is moved", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void createNewFolder(String folderName) {
