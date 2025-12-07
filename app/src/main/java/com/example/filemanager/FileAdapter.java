@@ -85,6 +85,12 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder
                     if (item.getItemId() == R.id.menuItem_delete) {
                         fileItemEventListener.onDeleteItemClick(file);
                     }
+                    if (item.getItemId() == R.id.menuItem_copy) {
+                        fileItemEventListener.onCopyFileItemClick(file);
+                    }
+                    if (item.getItemId() == R.id.menuItem_move) {
+                        fileItemEventListener.onMoveFileItemClick(file);
+                    }
                     return true;
                 });
             });

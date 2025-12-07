@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,6 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 
 public class FileListFragment extends Fragment implements FileItemEventListener {
@@ -62,6 +66,21 @@ public class FileListFragment extends Fragment implements FileItemEventListener 
         }
     }
 
+    @Override
+    public void onCopyFileItemClick(File file) {
+        try {
+            copy(file, getDestinationPath(file.getName()));
+            Toast.makeText(getContext(), "File is copied", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onMoveFileItemClick(File file) {
+
+    }
+
     public void createNewFolder(String folderName) {
         File newFolder = new File(path + File.separator + folderName);
         if (!newFolder.exists()) {
@@ -70,6 +89,23 @@ public class FileListFragment extends Fragment implements FileItemEventListener 
                 recyclerView.scrollToPosition(0);
             }
         }
+    }
+
+    private void copy(File source, File destination) throws IOException {
+        FileInputStream fileInputStream = new FileInputStream(source);
+        FileOutputStream fileOutputStream = new FileOutputStream(destination);
+        byte[] buffer = new byte[1024];
+        int length;
+        while ((length = fileInputStream.read(buffer)) > 0) {
+            fileOutputStream.write(buffer, 0, length);
+        }
+        fileInputStream.close();
+        fileOutputStream.close();
+    }
+
+    private File getDestinationPath(String fileName) {
+        return new File(getContext().getExternalFilesDir(null).getPath() + File.separator + "Destination"
+         + File.separator + fileName);
     }
 
 }
