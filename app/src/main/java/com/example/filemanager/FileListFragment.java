@@ -11,7 +11,18 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
+import java.util.Arrays;
+
 public class FileListFragment extends Fragment {
+
+    private String path;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        path = getArguments().getString("path");
+    }
 
     @Nullable
     @Override
@@ -19,7 +30,11 @@ public class FileListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_files, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.rv_files);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(new FileAdapter());
+
+        File currentFolder = new File(path);
+        File[] files = currentFolder.listFiles();
+
+        recyclerView.setAdapter(new FileAdapter(Arrays.asList(files)));
         return view;
     }
 
