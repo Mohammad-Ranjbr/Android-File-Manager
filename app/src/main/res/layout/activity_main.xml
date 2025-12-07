@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/gray100">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -68,12 +69,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_list_black_24dp"
+                app:cornerRadius="8dp"
                 style="@style/Widget.App.Button.OutlinedButton.IconOnly"/>
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_main_grid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_grid_black_24dp"
+                app:cornerRadius="8dp"
                 style="@style/Widget.App.Button.OutlinedButton.IconOnly"/>
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
