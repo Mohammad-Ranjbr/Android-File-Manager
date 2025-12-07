@@ -1,6 +1,9 @@
 package com.example.filemanager;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
@@ -10,7 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import java.io.File;
 
-public class MainActivity extends AppCompatActivity implements AddNewFolderCallback{
+public class MainActivity extends AppCompatActivity implements AddNewFolderCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +29,31 @@ public class MainActivity extends AppCompatActivity implements AddNewFolderCallb
         });
 
         //The path to our project file is in the path storage/self/primary/Android/data
-        if(StorageHelper.isExternalStorageReadable()) {
+        if (StorageHelper.isExternalStorageReadable()) {
             File externalFilesDirection = getExternalFilesDir(null);
             listFiles(externalFilesDirection.getPath(), false);
         }
+
+        EditText searchEditText = findViewById(R.id.et_main_search);
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frame_main_fragmentContainer);
+                if (fragment instanceof FileListFragment) {
+                    ((FileListFragment) fragment).search(s.toString());
+                }
+            }
+        });
 
     }
 

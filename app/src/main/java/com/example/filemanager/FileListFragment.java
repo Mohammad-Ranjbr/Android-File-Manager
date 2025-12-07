@@ -123,4 +123,8 @@ public class FileListFragment extends Fragment implements FileItemEventListener 
          + File.separator + fileName);
     }
 
+    public void search(String query) {
+        fileAdapter.search(query);
+    }
+
 }
