@@ -1,14 +1,16 @@
 package com.example.filemanager;
 
 import android.os.Bundle;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import java.io.File;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AddNewFolderCallback{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,6 +18,12 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimary));
+
+        ImageView addNewFolderButton = findViewById(R.id.iv_main_addNewFolder);
+        addNewFolderButton.setOnClickListener(v -> {
+            AddNewFolderDialog addNewFolderDialog = new AddNewFolderDialog();
+            addNewFolderDialog.show(getSupportFragmentManager(), null);
+        });
 
         //The path to our project file is in the path storage/self/primary/Android/data
         File externalFilesDirection = getExternalFilesDir(null);
@@ -37,6 +45,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void listFiles(String path) {
         this.listFiles(path, true);
+    }
+
+    @Override
+    public void onCreateFolderButtonClick(String folderName) {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frame_main_fragmentContainer);
+        if (fragment instanceof FileListFragment) {
+            ((FileListFragment) fragment).createNewFolder(folderName);
+        }
     }
 
 }

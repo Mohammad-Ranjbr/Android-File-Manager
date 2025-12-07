@@ -18,6 +18,8 @@ import java.util.Arrays;
 public class FileListFragment extends Fragment implements FileItemEventListener {
 
     private String path;
+    private RecyclerView recyclerView;
+    private FileAdapter fileAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,18 +31,18 @@ public class FileListFragment extends Fragment implements FileItemEventListener 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_files, container, false);
-        RecyclerView recyclerView = view.findViewById(R.id.rv_files);
+        this.recyclerView = view.findViewById(R.id.rv_files);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         TextView pathTextView = view.findViewById(R.id.tv_files_path);
         pathTextView.setText(path);
 
         File currentFolder = new File(path);
         File[] files = currentFolder.listFiles();
-        recyclerView.setAdapter(new FileAdapter(Arrays.asList(files), this));
 
-        view.findViewById(R.id.iv_files_back).setOnClickListener(v -> {
-            getActivity().onBackPressed();
-        });
+        this.fileAdapter = new FileAdapter(Arrays.asList(files), this);
+        recyclerView.setAdapter(fileAdapter);
+
+        view.findViewById(R.id.iv_files_back).setOnClickListener(v -> getActivity().onBackPressed());
 
         return view;
     }
@@ -50,6 +52,16 @@ public class FileListFragment extends Fragment implements FileItemEventListener 
         if (file.isDirectory()) {
             // path here still points to the previous path, the new path name must be added to it
             ((MainActivity)getActivity()).listFiles(path + File.separator + file.getName());
+        }
+    }
+
+    public void createNewFolder(String folderName) {
+        File newFolder = new File(path + File.separator + folderName);
+        if (!newFolder.exists()) {
+            if(newFolder.mkdir()) {
+                fileAdapter.addFile(newFolder);
+                recyclerView.scrollToPosition(0);
+            }
         }
     }
 

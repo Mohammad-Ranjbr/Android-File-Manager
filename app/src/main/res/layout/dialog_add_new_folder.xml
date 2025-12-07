@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            tools:text="@string/dialog_add_folder_title"
+            android:text="@string/dialog_add_folder_title"
             android:textColor="@color/black"
             android:fontFamily="@font/primary_bold"
             android:textStyle="bold"

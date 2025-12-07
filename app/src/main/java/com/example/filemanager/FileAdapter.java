@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder> {
@@ -18,7 +19,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder
     private FileItemEventListener fileItemEventListener;
 
     public FileAdapter(List<File> files, FileItemEventListener fileItemEventListener) {
-        this.files = files;
+        this.files = new ArrayList<>(files);
         this.fileItemEventListener = fileItemEventListener;
     }
 
@@ -37,6 +38,11 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder
     @Override
     public int getItemCount() {
         return files.size();
+    }
+
+    public void addFile(File file) {
+        files.add(0, file);
+        notifyItemInserted(0);
     }
 
     public class FileViewHolder extends RecyclerView.ViewHolder {
