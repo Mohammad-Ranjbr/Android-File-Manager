@@ -34,10 +34,10 @@ public class FileListFragment extends Fragment implements FileItemEventListener 
         this.recyclerView = view.findViewById(R.id.rv_files);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         TextView pathTextView = view.findViewById(R.id.tv_files_path);
-        pathTextView.setText(path);
 
         File currentFolder = new File(path);
         File[] files = currentFolder.listFiles();
+        pathTextView.setText(currentFolder.getName().equalsIgnoreCase("files") ? "External Storage": currentFolder.getName());
 
         this.fileAdapter = new FileAdapter(Arrays.asList(files), this);
         recyclerView.setAdapter(fileAdapter);
@@ -51,7 +51,14 @@ public class FileListFragment extends Fragment implements FileItemEventListener 
     public void onFileItemClick(File file) {
         if (file.isDirectory()) {
             // path here still points to the previous path, the new path name must be added to it
-            ((MainActivity)getActivity()).listFiles(path + File.separator + file.getName());
+            ((MainActivity)getActivity()).listFiles(file.getPath());
+        }
+    }
+
+    @Override
+    public void onDeleteItemClick(File file) {
+        if (file.delete()) {
+            fileAdapter.deleteFile(file);
         }
     }
 
