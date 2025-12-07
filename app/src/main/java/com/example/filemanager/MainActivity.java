@@ -26,8 +26,10 @@ public class MainActivity extends AppCompatActivity implements AddNewFolderCallb
         });
 
         //The path to our project file is in the path storage/self/primary/Android/data
-        File externalFilesDirection = getExternalFilesDir(null);
-        listFiles(externalFilesDirection.getPath(), false);
+        if(StorageHelper.isExternalStorageReadable()) {
+            File externalFilesDirection = getExternalFilesDir(null);
+            listFiles(externalFilesDirection.getPath(), false);
+        }
 
     }
 

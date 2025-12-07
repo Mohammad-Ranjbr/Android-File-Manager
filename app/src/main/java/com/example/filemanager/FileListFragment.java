@@ -40,11 +40,12 @@ public class FileListFragment extends Fragment implements FileItemEventListener 
         TextView pathTextView = view.findViewById(R.id.tv_files_path);
 
         File currentFolder = new File(path);
-        File[] files = currentFolder.listFiles();
-        pathTextView.setText(currentFolder.getName().equalsIgnoreCase("files") ? "External Storage": currentFolder.getName());
-
-        this.fileAdapter = new FileAdapter(Arrays.asList(files), this);
-        recyclerView.setAdapter(fileAdapter);
+        if (StorageHelper.isExternalStorageReadable()) {
+            File[] files = currentFolder.listFiles();
+            pathTextView.setText(currentFolder.getName().equalsIgnoreCase("files") ? "External Storage": currentFolder.getName());
+            this.fileAdapter = new FileAdapter(Arrays.asList(files), this);
+            recyclerView.setAdapter(fileAdapter);
+        }
 
         view.findViewById(R.id.iv_files_back).setOnClickListener(v -> getActivity().onBackPressed());
 
@@ -61,38 +62,46 @@ public class FileListFragment extends Fragment implements FileItemEventListener 
 
     @Override
     public void onDeleteItemClick(File file) {
-        if (file.delete()) {
-            fileAdapter.deleteFile(file);
+        if (StorageHelper.isExternalStorageWritable()) {
+            if (file.delete()) {
+                fileAdapter.deleteFile(file);
+            }
         }
     }
 
     @Override
     public void onCopyFileItemClick(File file) {
-        try {
-            copy(file, getDestinationPath(file.getName()));
-            Toast.makeText(getContext(), "File is copied", Toast.LENGTH_SHORT).show();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (StorageHelper.isExternalStorageWritable()) {
+            try {
+                copy(file, getDestinationPath(file.getName()));
+                Toast.makeText(getContext(), "File is copied", Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
     public void onMoveFileItemClick(File file) {
-        try {
-            copy(file, getDestinationPath(file.getName()));
-            onDeleteItemClick(file);
-            Toast.makeText(getContext(), "File is moved", Toast.LENGTH_SHORT).show();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (StorageHelper.isExternalStorageWritable()) {
+            try {
+                copy(file, getDestinationPath(file.getName()));
+                onDeleteItemClick(file);
+                Toast.makeText(getContext(), "File is moved", Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void createNewFolder(String folderName) {
-        File newFolder = new File(path + File.separator + folderName);
-        if (!newFolder.exists()) {
-            if(newFolder.mkdir()) {
-                fileAdapter.addFile(newFolder);
-                recyclerView.scrollToPosition(0);
+        if (StorageHelper.isExternalStorageWritable()) {
+            File newFolder = new File(path + File.separator + folderName);
+            if (!newFolder.exists()) {
+                if(newFolder.mkdir()) {
+                    fileAdapter.addFile(newFolder);
+                    recyclerView.scrollToPosition(0);
+                }
             }
         }
     }
