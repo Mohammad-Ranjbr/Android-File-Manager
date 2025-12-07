@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:backgroundTint="@color/white"
+    app:cardElevation="2dp"
+    app:cardCornerRadius="8dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginStart="12dp"
+    android:layout_marginEnd="12dp">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+        <ImageView
+            android:id="@+id/iv_file"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="12dp"
+            tools:srcCompat="@drawable/ic_folder_black_32dp"/>
+
+        <ImageView
+            android:id="@+id/iv_file_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            app:srcCompat="@drawable/ic_more_vertical_black_24dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/iv_file"
+            android:layout_centerVertical="true"
+            tools:text="Downloads"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:layout_toStartOf="@+id/iv_file_more"/>
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>
