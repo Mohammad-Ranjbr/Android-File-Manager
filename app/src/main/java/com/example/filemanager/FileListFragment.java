@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +25,7 @@ public class FileListFragment extends Fragment implements FileItemEventListener 
     private String path;
     private RecyclerView recyclerView;
     private FileAdapter fileAdapter;
+    private GridLayoutManager gridLayoutManager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,7 +38,8 @@ public class FileListFragment extends Fragment implements FileItemEventListener 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_files, container, false);
         this.recyclerView = view.findViewById(R.id.rv_files);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        this.gridLayoutManager = new GridLayoutManager(getContext(), 1, RecyclerView.VERTICAL, false);
+        recyclerView.setLayoutManager(gridLayoutManager);
         TextView pathTextView = view.findViewById(R.id.tv_files_path);
 
         File currentFolder = new File(path);
@@ -125,6 +128,17 @@ public class FileListFragment extends Fragment implements FileItemEventListener 
 
     public void search(String query) {
         fileAdapter.search(query);
+    }
+
+    public void setViewType(ViewType viewType) {
+        if (fileAdapter != null) {
+            fileAdapter.setViewType(viewType);
+            if (viewType == ViewType.GRID) {
+                gridLayoutManager.setSpanCount(2);
+            } else {
+                gridLayoutManager.setSpanCount(1);
+            }
+        }
     }
 
 }

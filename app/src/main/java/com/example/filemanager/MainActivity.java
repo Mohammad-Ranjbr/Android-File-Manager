@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.button.MaterialButtonToggleGroup;
+
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity implements AddNewFolderCallback {
@@ -51,6 +53,24 @@ public class MainActivity extends AppCompatActivity implements AddNewFolderCallb
                 Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frame_main_fragmentContainer);
                 if (fragment instanceof FileListFragment) {
                     ((FileListFragment) fragment).search(s.toString());
+                }
+            }
+        });
+
+        MaterialButtonToggleGroup toggleGroup = findViewById(R.id.toggleGroup_main);
+        toggleGroup.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
+            @Override
+            public void onButtonChecked(MaterialButtonToggleGroup materialButtonToggleGroup, int i, boolean b) {
+                if (i == R.id.btn_main_list && b) {
+                    Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frame_main_fragmentContainer);
+                    if (fragment instanceof FileListFragment) {
+                        ((FileListFragment) fragment).setViewType(ViewType.ROW);
+                    }
+                } else if (i == R.id.btn_main_grid && b) {
+                    Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frame_main_fragmentContainer);
+                    if (fragment instanceof FileListFragment) {
+                        ((FileListFragment) fragment).setViewType(ViewType.GRID);
+                    }
                 }
             }
         });

@@ -18,6 +18,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder
 
     private List<File> files;
     private List<File> filteredFiles;
+    private ViewType viewTypee = ViewType.ROW;
     private FileItemEventListener fileItemEventListener;
 
     public FileAdapter(List<File> files, FileItemEventListener fileItemEventListener) {
@@ -29,7 +30,8 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder
     @NonNull
     @Override
     public FileViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_file, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(
+                (viewType == viewTypee.ROW.getValue()) ? R.layout.item_file : R.layout.item_file_gride , parent, false);
         return new FileViewHolder(view);
     }
 
@@ -70,6 +72,16 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder
             this.filteredFiles = this.files;
             notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return viewTypee.getValue();
+    }
+
+    public void setViewType(ViewType viewType) {
+        this.viewTypee = viewType;
+        notifyDataSetChanged();
     }
 
     public class FileViewHolder extends RecyclerView.ViewHolder {
